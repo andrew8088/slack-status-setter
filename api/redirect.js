@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
   try {
     console.log("POSTing to slack api (oauth.v2.access)");
-    const res = await axios.post(
+    const payload = await axios.post(
       "https://slack.com/api/oauth.v2.access",
       formData,
       {
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       }
     );
     console.log("successful response!");
-    res.json({ success: true, payload: res });
+    res.json({ success: true, payload });
   } catch (err) {
     console.error(err);
     res.json({ success: false, payload: null, error: err });
