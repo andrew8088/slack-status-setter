@@ -6,6 +6,7 @@ module.exports = async (req, res) => {
   const { state, code } = query;
 
   if (state !== "andrews-slack-status-setter") {
+    console.error("state did not match, aborting");
     res.json({
       success: false,
       payload: null,
@@ -13,6 +14,7 @@ module.exports = async (req, res) => {
     });
     return;
   }
+  console.log("state matched, continuing");
 
   const formData = new FormData();
   formData.append("code", code);
@@ -23,11 +25,18 @@ module.exports = async (req, res) => {
   );
 
   try {
-    const res = await axios.post("http://localhost:3000/upload", formData, {
-      headers: formData.getHeaders(),
-    });
+    console.log("POSTing to slack api (oauth.v2.access)");
+    const res = await axios.post(
+      "https://slack.com/api/oauth.v2.access",
+      formData,
+      {
+        headers: formData.getHeaders(),
+      }
+    );
+    console.log("successful response!");
     res.json({ success: true, payload: res });
   } catch (err) {
+    console.error(err);
     res.json({ success: false, payload: null, error: err });
   }
 };
