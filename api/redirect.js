@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       }
     );
     console.log("successful response!");
-    res.json({ success: true, payload });
+    res.json({ success: true, payload: payload.data });
   } catch (err) {
     console.error(err);
     res.json({ success: false, payload: null, error: err });
